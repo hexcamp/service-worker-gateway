@@ -1,4 +1,5 @@
 import { dnsLinkLabelDecoder, isInlinedDnsLink } from './dns-link-labels.js'
+import { subdomainRegex } from './regex.js'
 
 export interface UrlParts {
   id: string | null
@@ -7,6 +8,12 @@ export interface UrlParts {
 }
 
 export function getSubdomainParts (urlString: string): UrlParts {
+  const subdomainMatch = location.host.match(subdomainRegex)
+  let id = subdomainMatch?.groups?.cidOrPeerIdOrDnslink || null
+  let parentDomain = subdomainMatch?.groups?.parentDomain || ''
+  const protocol = 'ipns'
+
+  /*
   const labels = new URL(urlString).hostname.split('.')
   let id: string | null = null
   let protocol: string | null = null
@@ -14,6 +21,7 @@ export function getSubdomainParts (urlString: string): UrlParts {
 
   // DNS label inspection happens from from right to left
   // to work fine with edge cases like docs.ipfs.tech.ipns.foo.localhost
+
   for (let i = labels.length - 1; i >= 0; i--) {
     if (labels[i].startsWith('ipfs') || labels[i].startsWith('ipns')) {
       protocol = labels[i]
@@ -26,8 +34,14 @@ export function getSubdomainParts (urlString: string): UrlParts {
       break
     }
   }
-  console.log("Jim GetSubdomainParts", id, parentDomain, protocol)
+  */
+  if (id) {
+    id = dnsLinkLabelDecoder(id)
+    id += '.seahex.org'
+  }
+   parentDomain = parentDomain.replace(/:.*$/,'')
 
+  console.log("Jim GetSubdomainParts", id, parentDomain, protocol)
   return {
     id,
     parentDomain,

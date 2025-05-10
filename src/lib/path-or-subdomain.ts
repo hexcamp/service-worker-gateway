@@ -42,6 +42,7 @@ export const findOriginIsolationRedirect = async (location: Pick<Location, 'prot
 
 const toSubdomainRequest = (location: Pick<Location, 'protocol' | 'host' | 'pathname' | 'search' | 'hash' | 'href' | 'origin'>): string => {
   const segments = location.pathname.split('/').filter(segment => segment !== '')
+  console.log("Jim toSubdomainRequest", location.pathname, segments)
   const ns = segments[0]
   let id = segments[1]
 

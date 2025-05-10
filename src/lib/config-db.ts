@@ -25,7 +25,8 @@ export interface ConfigDb extends ConfigDbWithoutPrivateFields {
   _supportsSubdomains: null | boolean
 }
 
-export const defaultGateways = ['https://trustless-gateway.link']
+// export const defaultGateways = ['https://trustless-gateway.link']
+export const defaultGateways = ['https://6kgvdnw3nwya.seahex.org', 'https://6kgvlnw3nwya.seahex.org', 'https://6kgvtnw3nwya.seahex.org']
 export const defaultRouters = ['https://delegated-ipfs.dev']
 export const defaultDnsJsonResolvers: Record<string, string> = {
   '.': 'https://delegated-ipfs.dev/dns-query'
