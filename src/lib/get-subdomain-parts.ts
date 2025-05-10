@@ -26,6 +26,7 @@ export function getSubdomainParts (urlString: string): UrlParts {
       break
     }
   }
+  console.log("Jim GetSubdomainParts", id, parentDomain, protocol)
 
   return {
     id,

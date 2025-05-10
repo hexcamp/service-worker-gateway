@@ -19,6 +19,7 @@ export default (): ReactElement => {
 
   history.replaceState({}, '', redirectUrl.toString())
   // redirect to the actual URL
+  console.log('Jim first-hit', redirectUrl.toString())
   window.location.href = redirectUrl.toString()
 
   return (

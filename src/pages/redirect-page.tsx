@@ -96,7 +96,8 @@ function RedirectPage ({ showConfigIframe = true }: { showConfigIframe?: boolean
 
   const loadContent = useCallback(() => {
     setIsLoadingContent(true)
-    window.location.href = reloadUrl
+    console.log('Jim RedirectPage loadContent', reloadUrl)
+    // window.location.href = reloadUrl
   }, [reloadUrl])
 
   useEffect(() => {
