@@ -14,7 +14,8 @@ export interface IpfsUriParts {
  * @see https://regex101.com/r/EcY028/4
  */
 // export const subdomainRegex = /^(?:https?:\/\/|\/\/)?(?<cidOrPeerIdOrDnslink>[^/]+)\.(?<protocol>ip[fn]s)\.(?<parentDomain>[^/?#]*)(?<path>.*)$/
-export const subdomainRegex = /^(?<proto>https?:\/\/|\/\/)?(?<cidOrPeerIdOrDnslink>[^/]+)\.(?<parentDomain>[^/?#]*)(?<path>.*)$/
+// export const subdomainRegex = /^(?<proto>https?:\/\/|\/\/)?(?<cidOrPeerIdOrDnslink>[^/]+)\.(?<parentDomain>[^/?#]*)(?<path>.*)$/
+export const subdomainRegex = /^(?<proto>https?:\/\/|\/\/)?(?<cidOrPeerIdOrDnslink>[^/]+)\.(?<parentDomain>seahex\.org)(?<path>.*)$/
 
 /**
  * `http[s]://example.com/ipfs/${cid}[/${path}]`
