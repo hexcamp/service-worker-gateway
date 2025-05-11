@@ -6,8 +6,10 @@ import { getSubdomainParts } from './lib/get-subdomain-parts.js'
 import { getVerifiedFetch } from './lib/get-verified-fetch.js'
 import { isConfigPage } from './lib/is-config-page.js'
 import { swLogger } from './lib/logger.js'
+import { subdomainRegex } from './lib/regex.js'
 import { findOriginIsolationRedirect, isPathGatewayRequest, isSubdomainGatewayRequest } from './lib/path-or-subdomain.js'
 import type { VerifiedFetch } from '@helia/verified-fetch'
+
 
 /**
  ******************************************************
@@ -511,6 +513,12 @@ async function fetchHandler ({ path, request, event }: FetchHandlerArg): Promise
     log.trace('fetchHandler: request headers: %s: %s', key, value)
   })
   log('verifiedFetch for ', event.request.url)
+  const modifiedUrl = event.request.url.replace('6kgvdnw3nwza.localhost', '6kgvdnw3nwza-seahex-org.ipns.localhost')
+  const subdomainMatch = event.request.url.match(subdomainRegex)
+  log('jim match groups', subdomainMatch?.groups)
+  const modifiedUrl2 = `${subdomainMatch?.groups?.proto}${subdomainMatch?.groups?.cidOrPeerIdOrDnslink}-seahex-org.ipns.${subdomainMatch?.groups?.parentDomain}${subdomainMatch?.groups?.path}`
+  log('jim match modifiedUrl2', modifiedUrl2)
+  log('verifiedFetch modified for ', modifiedUrl, modifiedUrl2)
 
   /**
    * Note that there are existing bugs regarding service worker signal handling:
@@ -542,8 +550,15 @@ async function fetchHandler ({ path, request, event }: FetchHandlerArg): Promise
     /**
      * @see https://github.com/ipfs/service-worker-gateway/issues/674
      */
+    // const subdomainMatch = location.host.match(subdomainRegex)
 
-    const response = await verifiedFetch(event.request.url, {
+    //const modifiedUrl = event.request.url.replace('6kgvdnw3nwza.localhost', '6kgvdnw3nwza-seahex-org.ipns.localhost')
+    // const modifiedUrl = `${subdomainMatch?.groups?.protocol}://${subdomainMatch?.groups?.cidOrPeerIdOrDnslink}.ipns.${subdomainMatch?.groups?.parentDomain}/${subdomainMatch?.groups?.path}`
+    
+    // log.trace('Jim modified', event.request.url, modifiedUrl)
+    log.trace('Jim modified')
+    // const response = await verifiedFetch(event.request.url, {
+    const response = await verifiedFetch(modifiedUrl2, {
       signal,
       headers,
       redirect: 'manual',

@@ -41,7 +41,7 @@ export function getSubdomainParts (urlString: string): UrlParts {
   }
    parentDomain = parentDomain.replace(/:.*$/,'')
 
-  console.log("Jim GetSubdomainParts", id, parentDomain, protocol)
+  // console.log("Jim GetSubdomainParts", id, parentDomain, protocol)
   return {
     id,
     parentDomain,
