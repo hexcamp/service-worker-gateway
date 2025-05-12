@@ -18,16 +18,18 @@ const ConfigIframe: React.FC = () => {
   const { isServiceWorkerRegistered } = useContext(ServiceWorkerContext)
 
   let iframeSrc
-  if (parentDomain == null || parentDomain === window.location.href) {
-    const url = new URL(window.location.href)
-    url.pathname = '/'
-    url.hash = `#/ipfs-sw-config@origin=${encodeURIComponent(window.location.origin)}`
+  // if (parentDomain == null || parentDomain === window.location.href) {
+  const url = new URL(window.location.href)
+  url.pathname = '/'
+  url.hash = `#/ipfs-sw-config@origin=${encodeURIComponent(window.location.origin)}`
 
-    iframeSrc = url.href
-  } else {
-    const portString = window.location.port === '' ? '' : `:${window.location.port}`
-    iframeSrc = `${window.location.protocol}//${parentDomain}${portString}/#/ipfs-sw-config@origin=${encodeURIComponent(window.location.origin)}`
-  }
+  iframeSrc = url.href
+  /*
+} else {
+  const portString = window.location.port === '' ? '' : `:${window.location.port}`
+  iframeSrc = `${window.location.protocol}//${parentDomain}${portString}/#/ipfs-sw-config@origin=${encodeURIComponent(window.location.origin)}`
+}
+  */
 
   const [isVisible, setIsVisible] = useState(false)
 
@@ -45,7 +47,7 @@ const ConfigIframe: React.FC = () => {
   )
 }
 
-function RedirectPage ({ showConfigIframe = true }: { showConfigIframe?: boolean }): ReactElement {
+function RedirectPage({ showConfigIframe = true }: { showConfigIframe?: boolean }): ReactElement {
   const { isServiceWorkerRegistered } = useContext(ServiceWorkerContext)
   const [reloadUrl, setReloadUrl] = useState(translateIpfsRedirectUrl(window.location.href).href)
   const [isLoadingContent, setIsLoadingContent] = useState(false)
@@ -56,7 +58,8 @@ function RedirectPage ({ showConfigIframe = true }: { showConfigIframe?: boolean
       setReloadUrl(window.location.href.replace('#/ipfs-sw-config', ''))
     }
 
-    async function doWork (config: ConfigDb): Promise<void> {
+    async function doWork(config: ConfigDb): Promise<void> {
+      console.log('Jim doWork')
       try {
         await setConfig(config, uiComponentLogger)
         await tellSwToReloadConfig()
@@ -101,6 +104,7 @@ function RedirectPage ({ showConfigIframe = true }: { showConfigIframe?: boolean
   }, [reloadUrl])
 
   useEffect(() => {
+    console.log("Jim RedirectPage useEffect", isServiceWorkerRegistered, window.location.hash, isLoadingContent, isConfigLoading)
     if (isServiceWorkerRegistered && !isConfigPage(window.location.hash) && !isLoadingContent && !isConfigLoading) {
       loadContent()
     }
@@ -112,6 +116,7 @@ function RedirectPage ({ showConfigIframe = true }: { showConfigIframe?: boolean
       <div className="redirect-page">
         <div className="pa4-l mw7 mv5 center pa4">
           <h3 className="mt5">{displayString}</h3>
+          <a href={reloadUrl}>{reloadUrl}</a>
         </div>
         {showConfigIframe && <ConfigIframe />}
       </div>
